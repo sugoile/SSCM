@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsg.sscm.dao.ApiDao">
+
+    <resultMap type="com.xsg.sscm.dto.ApiParentParam" id="APIParentParam">
+        <id property="value" jdbcType="BIGINT" column="id"/>
+        <result column="api_name" jdbcType="VARCHAR" property="apiName" />
+    </resultMap>
+
+    <select id="getApiTree" resultType="com.xsg.sscm.dto.ApiTreeParam">
+        SELECT *
+        FROM u_api
+    </select>
+
+    <select id="checkLinkRole" resultType="java.lang.Long" parameterType="java.lang.Long">
+       SELECT ura.role_id
+       FROM u_role_api ura
+       WHERE ura.api_id = #{ApiID}
+    </select>
+
+    <select id="getOneApi" resultMap="APIParentParam">
+        SELECT ua.id, ua.api_name
+        FROM u_api ua WHERE ua.pid = 0
+    </select>
+
+    <select id="getTwoApi" resultMap="APIParentParam">
+        SELECT ua.id, ua.api_name
+        FROM u_api ua WHERE ua.pid = #{ApiID}
+    </select>
+
+    <select id="MaxSort" resultType="java.lang.Integer">
+        SELECT max(ua.sort) FROM u_api ua WHERE ua.pid = #{Pid};
+    </select>
+
+</mapper>

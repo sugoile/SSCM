@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsg.sscm.dao.AdminRelationDao">
+
+    <select id="getRolesByUserID" resultType="com.xsg.sscm.model.URole">
+    SELECT ur.role_name, ur.id
+    FROM u_role ur
+        WHERE ur.id in (SELECT uar.role_id FROM u_admin_role uar WHERE admin_id = #{admin_id})
+    </select>
+
+    <select id="getApiUrlByUserName" resultType="com.xsg.sscm.po.ApiPO">
+        SELECT uapi.api_url,uapi.api_method
+        FROM
+        u_api uapi, u_role_api ura, u_role ur, u_admin_role uar, u_admin ua
+        WHERE
+        uapi.id = ura.api_id and
+        uapi.api_url != "none" and
+        ur.id = ura.role_id and
+        uar.role_id = ur.id and
+        ua.id = uar.admin_id and
+        ua.username = #{username}
+    </select>
+
+
+    <select id="getMenusByUserName" resultType="com.xsg.sscm.po.FontMenuPO">
+    SELECT ufm.id,ufm.font_icon,
+    ufm.font_menu_name,ufm.pid,ufm.path,ufm.sort
+    FROM
+    u_font_menu ufm, u_role_font_menu urfm, u_role ur, u_admin_role uar, u_admin ua
+    WHERE
+    ufm.id = urfm.font_menu_id and
+    ur.id = urfm.role_id and
+    uar.role_id = ur.id and
+    ua.id = uar.admin_id and
+    ua.username = #{username}
+    </select>
+
+    <select id="getAdminList" resultType="com.xsg.sscm.dto.AdminParam" parameterType="java.lang.String">
+        SELECT ua.id, ua.username, ua.email, ua.nick_name, ua.note, ua.create_time, ua.login_time, ua.status
+        FROM u_admin ua
+        <if test="query != null">
+            where ua.username LIKE CONCAT('%', #{query}, '%') OR ua.nick_name LIKE CONCAT('%', #{query}, '%')
+        </if>
+    </select>
+
+
+    <select id="getAdminListNotAdmin" resultType="com.xsg.sscm.dto.AdminParam" parameterType="java.lang.String">
+        SELECT ua.id, ua.username, ua.email, ua.nick_name, ua.note, ua.create_time, ua.login_time, ua.status
+        FROM u_admin ua WHERE ua.id NOT IN (SELECT DISTINCT uar.admin_id FROM u_admin_role uar WHERE uar.role_id IN (1,
+        2))
+        <if test="query != null">
+            AND (ua.username LIKE CONCAT('%', #{query}, '%') OR ua.nick_name LIKE CONCAT('%', #{query}, '%'))
+        </if>
+    </select>
+
+    <select id="getEditAdmin" resultType="com.xsg.sscm.dto.EditAdminParam">
+        SELECT ua.username, ua.password, ua.email, ua.nick_name, ua.note
+        FROM u_admin ua WHERE ua.id = #{ID}
+    </select>
+
+    <select id="getAssignRoleList" resultType="com.xsg.sscm.dto.AssignRoleParam">
+        SELECT ur.id, ur.role_name
+        FROM u_role ur
+    </select>
+
+    <select id="checkLinkRole" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT uar.role_id
+        FROM u_admin_role uar
+        WHERE uar.admin_id = #{id}
+    </select>
+
+
+</mapper>

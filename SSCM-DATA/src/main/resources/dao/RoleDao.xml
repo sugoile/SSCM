@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsg.sscm.dao.RoleDao">
+
+    <select id="getRoleList" resultType="com.xsg.sscm.dto.RoleParam" parameterType="java.lang.String">
+        SELECT ur.id, ur.role_name, ur.description
+        FROM u_role ur
+        <if test="query != null">
+            where ur.role_name LIKE CONCAT('%', #{query}, '%')
+        </if>
+    </select>
+
+    <select id="maxSort" resultType="java.lang.Integer">
+        select max(sort) from u_role;
+    </select>
+
+    <select id="count" resultType="java.lang.Long" parameterType="java.lang.String">
+        select COUNT(role_name) from u_role WHERE role_name = #{RoleName};
+    </select>
+
+    <select id="checkRoleAdminRel" resultType="java.lang.Long" parameterType="java.lang.Long">
+        select COUNT(*) from u_admin_role WHERE role_id = #{roleID};
+    </select>
+
+    <select id="getAssignAdminList" resultType="com.xsg.sscm.dto.AssignAdminParam">
+        SELECT ua.id, ua.username
+        FROM u_admin ua
+    </select>
+
+    <select id="checkLinkAdmin" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT uar.admin_id
+        FROM u_admin_role uar
+        WHERE uar.role_id = #{roleID}
+    </select>
+
+    <select id="checkLinkMenu" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT urf.font_menu_id
+        FROM u_role_font_menu urf
+        WHERE urf.role_id = #{roleID}
+    </select>
+
+    <select id="checkLinkApi" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT ura.api_id
+        FROM u_role_api ura
+        WHERE ura.role_id = #{roleID}
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsg.sscm.dao.MenuDao">
+
+    <select id="getMenuList" resultType="com.xsg.sscm.dto.MenuListParam">
+        SELECT ufm.id, ufm.font_menu_name, ufm.sort, ufm.path, ufm.font_icon, ufm.description
+        FROM u_font_menu ufm
+    </select>
+
+
+    <select id="getMenuTree" resultType="com.xsg.sscm.dto.MenuTreeParam">
+        SELECT ufm.id, ufm.font_menu_name, ufm.sort, ufm.pid, ufm.path, ufm.font_icon, ufm.description
+        FROM u_font_menu ufm
+    </select>
+
+</mapper>
