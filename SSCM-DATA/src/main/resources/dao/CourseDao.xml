@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsg.sscm.dao.CourseDao">
+    <select id="getCourse" resultType="com.xsg.sscm.dto.CourseInfo" parameterType="java.lang.String">
+        SELECT cc.*,ut.tname
+        FROM c_course cc
+        LEFT JOIN u_teacher ut
+        on cc.tid = ut.id
+        <if test="query !=  null">
+            where cc.name LIKE CONCAT('%', #{query}, '%')
+            or cc.teaching_class LIKE CONCAT('%', #{query}, '%')
+            or ut.tname LIKE CONCAT('%', #{query}, '%')
+        </if>
+    </select>
+
+</mapper>

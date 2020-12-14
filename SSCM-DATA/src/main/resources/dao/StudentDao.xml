@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsg.sscm.dao.StudentDao">
+    <select id="getStudent" resultType="com.xsg.sscm.dto.StudentInfo" parameterType="java.lang.String">
+        SELECT us.id, us.sno, us.name, us.deptid, us.classes, dd.d_name, us.grade,
+               us.campus, us.student_status, us.study_status, us.admission_time,
+               us.create_time, us.login_time
+        FROM u_student us
+        LEFT JOIN d_department dd
+        on us.deptid = dd.id
+        <if test="query != null">
+            where us.name LIKE CONCAT('%', #{query}, '%')
+            or dd.d_name LIKE CONCAT('%', #{query}, '%')
+            or us.sno LIKE CONCAT('%', #{query}, '%')
+        </if>
+    </select>
+
+</mapper>

@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xsg.sscm.mapper.UTeacherMapper">
-  <resultMap id="BaseResultMap" type="com.xsg.sscm.model.UTeacher">
+<mapper namespace="com.xsg.sscm.mapper.UUserMapper">
+  <resultMap id="BaseResultMap" type="com.xsg.sscm.model.UUser">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="tno" jdbcType="BIGINT" property="tno" />
-    <result column="tname" jdbcType="VARCHAR" property="tname" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
-    <result column="education" jdbcType="VARCHAR" property="education" />
-    <result column="position" jdbcType="VARCHAR" property="position" />
-    <result column="Maincourse" jdbcType="VARCHAR" property="maincourse" />
-    <result column="Secondcourse" jdbcType="VARCHAR" property="secondcourse" />
-    <result column="deptid" jdbcType="BIGINT" property="deptid" />
-    <result column="campus" jdbcType="VARCHAR" property="campus" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,16 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, tno, tname, sex, education, position, Maincourse, Secondcourse, deptid, campus, 
-    password, create_time, login_time, status
+    id, username, password, create_time, login_time, status, type, uid
   </sql>
-  <select id="selectByExample" parameterType="com.xsg.sscm.model.UTeacherExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.xsg.sscm.model.UUserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from u_teacher
+    from u_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,66 +89,38 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from u_teacher
+    from u_user
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from u_teacher
+    delete from u_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.xsg.sscm.model.UTeacherExample">
-    delete from u_teacher
+  <delete id="deleteByExample" parameterType="com.xsg.sscm.model.UUserExample">
+    delete from u_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.xsg.sscm.model.UTeacher">
+  <insert id="insert" parameterType="com.xsg.sscm.model.UUser">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into u_teacher (tno, tname, sex, 
-      education, position, Maincourse, 
-      Secondcourse, deptid, campus, 
-      password, create_time, login_time, 
-      status)
-    values (#{tno,jdbcType=BIGINT}, #{tname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
-      #{education,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{maincourse,jdbcType=VARCHAR}, 
-      #{secondcourse,jdbcType=VARCHAR}, #{deptid,jdbcType=BIGINT}, #{campus,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{loginTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER})
+    insert into u_user (username, password, create_time, 
+      login_time, status, type, 
+      uid)
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{loginTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{uid,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.xsg.sscm.model.UTeacher">
+  <insert id="insertSelective" parameterType="com.xsg.sscm.model.UUser">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into u_teacher
+    insert into u_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="tno != null">
-        tno,
-      </if>
-      <if test="tname != null">
-        tname,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="education != null">
-        education,
-      </if>
-      <if test="position != null">
-        position,
-      </if>
-      <if test="maincourse != null">
-        Maincourse,
-      </if>
-      <if test="secondcourse != null">
-        Secondcourse,
-      </if>
-      <if test="deptid != null">
-        deptid,
-      </if>
-      <if test="campus != null">
-        campus,
+      <if test="username != null">
+        username,
       </if>
       <if test="password != null">
         password,
@@ -169,34 +134,16 @@
       <if test="status != null">
         status,
       </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="tno != null">
-        #{tno,jdbcType=BIGINT},
-      </if>
-      <if test="tname != null">
-        #{tname,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=INTEGER},
-      </if>
-      <if test="education != null">
-        #{education,jdbcType=VARCHAR},
-      </if>
-      <if test="position != null">
-        #{position,jdbcType=VARCHAR},
-      </if>
-      <if test="maincourse != null">
-        #{maincourse,jdbcType=VARCHAR},
-      </if>
-      <if test="secondcourse != null">
-        #{secondcourse,jdbcType=VARCHAR},
-      </if>
-      <if test="deptid != null">
-        #{deptid,jdbcType=BIGINT},
-      </if>
-      <if test="campus != null">
-        #{campus,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
@@ -210,46 +157,28 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.xsg.sscm.model.UTeacherExample" resultType="java.lang.Long">
-    select count(*) from u_teacher
+  <select id="countByExample" parameterType="com.xsg.sscm.model.UUserExample" resultType="java.lang.Long">
+    select count(*) from u_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update u_teacher
+    update u_user
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.tno != null">
-        tno = #{record.tno,jdbcType=BIGINT},
-      </if>
-      <if test="record.tname != null">
-        tname = #{record.tname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sex != null">
-        sex = #{record.sex,jdbcType=INTEGER},
-      </if>
-      <if test="record.education != null">
-        education = #{record.education,jdbcType=VARCHAR},
-      </if>
-      <if test="record.position != null">
-        position = #{record.position,jdbcType=VARCHAR},
-      </if>
-      <if test="record.maincourse != null">
-        Maincourse = #{record.maincourse,jdbcType=VARCHAR},
-      </if>
-      <if test="record.secondcourse != null">
-        Secondcourse = #{record.secondcourse,jdbcType=VARCHAR},
-      </if>
-      <if test="record.deptid != null">
-        deptid = #{record.deptid,jdbcType=BIGINT},
-      </if>
-      <if test="record.campus != null">
-        campus = #{record.campus,jdbcType=VARCHAR},
+      <if test="record.username != null">
+        username = #{record.username,jdbcType=VARCHAR},
       </if>
       <if test="record.password != null">
         password = #{record.password,jdbcType=VARCHAR},
@@ -263,60 +192,36 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null">
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update u_teacher
+    update u_user
     set id = #{record.id,jdbcType=BIGINT},
-      tno = #{record.tno,jdbcType=BIGINT},
-      tname = #{record.tname,jdbcType=VARCHAR},
-      sex = #{record.sex,jdbcType=INTEGER},
-      education = #{record.education,jdbcType=VARCHAR},
-      position = #{record.position,jdbcType=VARCHAR},
-      Maincourse = #{record.maincourse,jdbcType=VARCHAR},
-      Secondcourse = #{record.secondcourse,jdbcType=VARCHAR},
-      deptid = #{record.deptid,jdbcType=BIGINT},
-      campus = #{record.campus,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       login_time = #{record.loginTime,jdbcType=TIMESTAMP},
-      status = #{record.status,jdbcType=INTEGER}
+      status = #{record.status,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsg.sscm.model.UTeacher">
-    update u_teacher
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsg.sscm.model.UUser">
+    update u_user
     <set>
-      <if test="tno != null">
-        tno = #{tno,jdbcType=BIGINT},
-      </if>
-      <if test="tname != null">
-        tname = #{tname,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=INTEGER},
-      </if>
-      <if test="education != null">
-        education = #{education,jdbcType=VARCHAR},
-      </if>
-      <if test="position != null">
-        position = #{position,jdbcType=VARCHAR},
-      </if>
-      <if test="maincourse != null">
-        Maincourse = #{maincourse,jdbcType=VARCHAR},
-      </if>
-      <if test="secondcourse != null">
-        Secondcourse = #{secondcourse,jdbcType=VARCHAR},
-      </if>
-      <if test="deptid != null">
-        deptid = #{deptid,jdbcType=BIGINT},
-      </if>
-      <if test="campus != null">
-        campus = #{campus,jdbcType=VARCHAR},
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
@@ -330,24 +235,24 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsg.sscm.model.UTeacher">
-    update u_teacher
-    set tno = #{tno,jdbcType=BIGINT},
-      tname = #{tname,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=INTEGER},
-      education = #{education,jdbcType=VARCHAR},
-      position = #{position,jdbcType=VARCHAR},
-      Maincourse = #{maincourse,jdbcType=VARCHAR},
-      Secondcourse = #{secondcourse,jdbcType=VARCHAR},
-      deptid = #{deptid,jdbcType=BIGINT},
-      campus = #{campus,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.xsg.sscm.model.UUser">
+    update u_user
+    set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       login_time = #{loginTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

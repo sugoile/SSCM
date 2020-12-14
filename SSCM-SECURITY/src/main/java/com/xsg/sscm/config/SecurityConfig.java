@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsUtils;
 
 /**
- * @des:  security 安全认证和授权
+ * @des: security 安全认证和授权
  * @package: com.xsg.sscm.security
  * @author: xsg
  * @date: 2020/9/6
@@ -57,16 +57,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * 基于token，所以不需要session
          */
         httpSecurity.csrf().disable()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //禁用缓存
-                    .and().headers().cacheControl();
+                .and().headers().cacheControl();
 
         /**
          * 放行静态资源
          * 这里使用的不是注解形式来显示security的权限信息，而是使用RBAC模型来动态实现security的授权等信息
          */
         httpSecurity.authorizeRequests()
-                    .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
+                .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
                         "/",
                         "/*.html",
                         "/favicon.ico",
@@ -77,17 +77,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs/**"
                 )
                 .permitAll();
+        /**
+         * 放行需要给学生和教师登录及使用的接口
+         **/
+        httpSecurity.authorizeRequests()
+                .antMatchers("/SORTController/**")
+                .permitAll();
+
 
         //动态访问
         httpSecurity.authorizeRequests()
-               // .antMatchers(HttpMethod.POST,"/user/register").permitAll()
+                // .antMatchers(HttpMethod.POST,"/user/register").permitAll()
                 .anyRequest().access("@dynamicPermission.checkPermisstion(request,authentication)");
 
         //拦截账号、密码。覆盖 UsernamePasswordAuthenticationFilter过滤器
         httpSecurity.addFilterAt(myUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         //拦截token，并检测。在 UsernamePasswordAuthenticationFilter 之前添加 JwtAuthenticationTokenFilter
-        httpSecurity.addFilterBefore(myOncePerRequestFilter,UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(myOncePerRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         //处理异常情况：认证失败和权限不足
         httpSecurity.exceptionHandling().authenticationEntryPoint(myAuthenticationEntryPoint).accessDeniedHandler(myAccessDeniedHandler);
@@ -101,7 +108,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public MyUsernamePasswordAuthenticationFilter myUsernamePasswordAuthenticationFilter() throws Exception{
+    public MyUsernamePasswordAuthenticationFilter myUsernamePasswordAuthenticationFilter() throws Exception {
         MyUsernamePasswordAuthenticationFilter filter = new MyUsernamePasswordAuthenticationFilter();
         //成功后处理
         filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);

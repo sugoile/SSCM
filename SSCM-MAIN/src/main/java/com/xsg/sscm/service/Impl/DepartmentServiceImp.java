@@ -69,4 +69,9 @@ public class DepartmentServiceImp implements DepartmentService {
         }
         return departmentParams;
     }
+
+    @Override
+    public List<DDepartment> getDepartmentNoSelect() {
+        return dDepartmentMapper.selectByExample(new DDepartmentExample());
+    }
 }

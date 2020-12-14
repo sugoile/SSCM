@@ -1,17 +1,16 @@
 package com.xsg.sscm.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UTeacher implements Serializable {
     private Long id;
 
     private Long tno;
 
-    private String name;
+    private String tname;
 
     private Integer sex;
-
-    private Integer age;
 
     private String education;
 
@@ -20,6 +19,18 @@ public class UTeacher implements Serializable {
     private String maincourse;
 
     private String secondcourse;
+
+    private Long deptid;
+
+    private String campus;
+
+    private String password;
+
+    private Date createTime;
+
+    private Date loginTime;
+
+    private Integer status;
 
     private static final long serialVersionUID = 1L;
 
@@ -39,12 +50,12 @@ public class UTeacher implements Serializable {
         this.tno = tno;
     }
 
-    public String getName() {
-        return name;
+    public String getTname() {
+        return tname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTname(String tname) {
+        this.tname = tname;
     }
 
     public Integer getSex() {
@@ -53,14 +64,6 @@ public class UTeacher implements Serializable {
 
     public void setSex(Integer sex) {
         this.sex = sex;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public String getEducation() {
@@ -93,5 +96,53 @@ public class UTeacher implements Serializable {
 
     public void setSecondcourse(String secondcourse) {
         this.secondcourse = secondcourse;
+    }
+
+    public Long getDeptid() {
+        return deptid;
+    }
+
+    public void setDeptid(Long deptid) {
+        this.deptid = deptid;
+    }
+
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String campus) {
+        this.campus = campus;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

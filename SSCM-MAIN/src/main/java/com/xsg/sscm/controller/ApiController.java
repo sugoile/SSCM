@@ -72,7 +72,7 @@ public class ApiController {
                               @Validated @RequestBody UApi uApi, BindingResult bindingResult){
         int count = apiService.updateApi(ID, uApi);
         if(count > 0){
-            return REData.success("更改成功", null);
+            return REData.success("更改成功",  null);
         }else{
             return REData.failed("更改失败");
         }

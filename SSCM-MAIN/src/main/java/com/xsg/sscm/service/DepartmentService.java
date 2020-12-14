@@ -1,6 +1,7 @@
 package com.xsg.sscm.service;
 
 import com.xsg.sscm.dto.DepartmentParam;
+import com.xsg.sscm.model.DDepartment;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ import java.util.List;
  **/
 public interface DepartmentService {
     List<DepartmentParam> getDepartment(String query, Integer pageSize, Integer pageNum);
+
+    List<DDepartment> getDepartmentNoSelect();
 }

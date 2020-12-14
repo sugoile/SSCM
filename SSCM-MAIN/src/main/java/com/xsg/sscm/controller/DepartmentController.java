@@ -27,4 +27,9 @@ public class DepartmentController {
                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum){
         return REData.success(CommonPage.resultPage(departmentService.getDepartment(query, pageSize, pageNum)));
     }
+
+    @GetMapping(value = "/getDepartmentNoSelect")
+    public REData getDepartmentNoSelect(){
+        return REData.success(departmentService.getDepartmentNoSelect());
+    }
 }
