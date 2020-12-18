@@ -205,6 +205,9 @@ public class SORTServiceImp implements SORTService {
         cCourse1.setId(courseid);
         cCourse1.setChooseNumber(cCourse.getChooseNumber() - 1);
         cCourseMapper.updateByPrimaryKeySelective(cCourse1);
+        CCourseScoreExample cCourseScoreExample = new CCourseScoreExample();
+        cCourseScoreExample.createCriteria().andCidEqualTo(courseid).andSidEqualTo(id);
+        cCourseScoreMapper.deleteByExample(cCourseScoreExample);
         return uStudentCourseMapper.deleteByExample(uStudentCourseExample);
     }
 
